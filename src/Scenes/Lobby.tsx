@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { CreateGame } from "./CreateGame";
 import { JoinGame } from "./JoinGame";
 import { TeamSelect } from "./TeamSelect";
-import type { LobbyPlayer } from "../../types";
 import { useLobby } from "../hooks/useLobby";
 
 type LobbyStep = "home" | "create" | "join" | "teams";
@@ -18,18 +17,6 @@ export function Lobby({
   const [roomId, setRoomId] = useState("");
   const [playerId, setPlayerId] = useState(0);
 
-  const [players, setPlayers] = useState<LobbyPlayer[]>([]);
-
-  function enterTeam(team: 1 | 2) {
-    setPlayers((prev) =>
-      prev.map((player) =>
-        player.id === playerId
-          ? { ...player, team }
-          : player
-      )
-    );
-  }
-
   if (step === "create") {
     return (
       <CreateGame
@@ -38,16 +25,6 @@ export function Lobby({
         onCreated={(room, id) => {
           setRoomId(room);
           setPlayerId(id);
-
-          setPlayers([
-            {
-              id,
-              name: playerName,
-              team: 1,
-              isHost: true,
-            },
-          ]);
-
           setStep("teams");
         }}
       />
@@ -62,16 +39,6 @@ export function Lobby({
         onJoined={(room, id) => {
           setRoomId(room);
           setPlayerId(id);
-
-          setPlayers([
-            {
-              id,
-              name: playerName,
-              team: null,
-              isHost: false,
-            },
-          ]);
-
           setStep("teams");
         }}
       />
