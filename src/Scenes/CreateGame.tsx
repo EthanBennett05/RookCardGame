@@ -9,23 +9,23 @@ export function CreateGame({
 }) {
 
   async function createGame() {
-  try {
-    const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/rooms`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ playerName }),
-    });
-    if (!res.ok) {
-      console.error("[CreateGame] server responded with error:", res.status);
-      return;
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/rooms`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ playerName }),
+      });
+      if (!res.ok) {
+        console.error("[CreateGame] server responded with error:", res.status);
+        return;
+      }
+      const { roomId, playerId } = await res.json();
+      console.log("[CreateGame] room created:", roomId, playerId);
+      onCreated(roomId, playerId);
+    } catch (err) {
+      console.error("[CreateGame] fetch failed:", err);
     }
-    const { roomId, playerId } = await res.json();
-    console.log("[CreateGame] room created:", roomId, playerId);
-    onCreated(roomId, playerId);
-  } catch (err) {
-    console.error("[CreateGame] fetch failed:", err);
   }
-}
 
   return (
     <div className="bg-gradient-to-b from-sky-900 to-sky-950 p-8 md:p-12 rounded-2xl w-full max-w-xl space-y-6 border-4 border-yellow-400 shadow-[0_0_40px_rgba(0,0,0,0.5)] relative overflow-hidden">
