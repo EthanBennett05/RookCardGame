@@ -9,7 +9,7 @@ export function useLobby(roomId: string, playerId: number) {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:3001");
+    const socket = io(import.meta.env.VITE_SERVER_URL);
     socketRef.current = socket;
 
     socket.on("connect", () => {
