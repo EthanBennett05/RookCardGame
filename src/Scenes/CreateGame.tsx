@@ -10,7 +10,7 @@ export function CreateGame({
 
   async function createGame() {
   try {
-    const res = await fetch(import.meta.env.VITE_SERVER_URL, {
+    const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/rooms`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ playerName }),
